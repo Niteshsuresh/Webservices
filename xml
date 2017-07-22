@@ -211,12 +211,11 @@ CDATA - Character Data
 ID - If this attribute is used, then value used in should be unique in xml. The value can only with _ or alphabets
 IDREF - Refering and element by ID. Mostly used for reuse
 IDREFS - Refering list of elements by IDs separated by space as value
-ENTITY
-ENTITIES
+ENTITY - alias for text which can be used in CDATA, PCDATA elements
 NMTOKEN - must be a valid xml[A-Z a-z 0-9 - _ .] are the only values are allowed 
-NMTOKENS
+NMTOKENS - must be used when we want to have list NMTOKERNS
 ENUMERATED - List of Values. The attribute allows any one of the value from the list.
-NOTATION
+NOTATION - A shortcut or alias. Eg:- image/jpeg --> jpeg, application/json --> json
 
 eg:-
 ENUMERATED
@@ -266,17 +265,74 @@ eg:-
 <student scourses="CR11 CR12 CR22" departname="_ABCD"></student> 
 
 
+NOTATION
 
+declaration syntax:-
 
+<!NOTATION notation SYSTEM|PUBLIC fornotation>
+eg:-
+<!NOTATION JPG SYSTEM "image/jpeg">
+<!NOTATION PNG SYSTEM "image/png">
 
+using NOTATION
+<!ATTLIST photo photoimage NOTATION (JPG|PNG) #REQUIRED>
 
+Note:- When working with NOTATION type, the element should have a content compulsory
 
+using ENTITY
 
+syntax:-
 
+<!ENTITY entityname "requiredvalues">
+<!ENTITY amp "&">
+<!ENTITY apos "'">
+<!ENTITY quot """>
+<!ENTITY lt "<">
+<!ENTITY gt ">">
+<!ENTITY IN "india">
 
+using ENTITY
 
+<courses>
+ <course>
+   <name>&IN;</name>
+ </course>
 
+</courses> 
 
+runtime....
+<courses>
+ <course>
+   <name>india</name>
+ </course>
+</courses> 
+
+Parameter entities
+used for text replacements
+syntax:-
+ <!ENTITY % ename "entity_value">
+
+<!ELEMENT residence (name, street, pincode, city, phone)>
+<!ELEMENT apartment (name, street, pincode, city, phone)>
+<!ELEMENT office (name, street, pincode, city, phone)>
+<!ELEMENT shop (name, street, pincode, city, phone)>
+
+Declaration of parameter entities
+
+<!ENTITY % area "name, street, pincode, city">
+<!ENTITY % contact "phone">
+
+usage
+<!ELEMENT residence (%area;, %contact;)>
+<!ELEMENT apartment (%area;, %contact;)>
+<!ELEMENT office (%area;, %contact;)>
+<!ELEMENT shop (%area;, %contact;)>
+
+runtime...
+<!ELEMENT residence (name, street, pincode, city, phone)>
+<!ELEMENT apartment (name, street, pincode, city, phone)>
+<!ELEMENT office (name, street, pincode, city, phone)>
+<!ELEMENT shop (name, street, pincode, city, phone)>
 
 
 
