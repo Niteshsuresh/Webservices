@@ -1,0 +1,309 @@
+Data History
+
+Back in Mainframe days.
+	They had Proprietary format and where not build for interoperability and cross platform. Mostly used to unique to be
+	manufacturer.
+
+        Then HTML came which was browse based and gave us an ability to view data across the platform
+        But then HTML's were merely a markup, where the meaning data is lost and are limited html elements that browser used.
+
+
+   They XML came in as Markup, self describing and can be queried
+   
+What is XML?
+ Its an self-describing data
+	Initial XML draft first came out in No 96
+ XML brought the unified possiblity of exchanging data between computers
+ 
+XML & HTML
+ HTML
+  Markup language
+  Standard tags
+  Forgiving
+
+ XML
+  Markup language
+  Self describing
+  Case Sensitive
+  Not Forgiving
+
+
+Document Rules
+ Tags are case-sensitive
+ Opening tags must have closing tags
+ Tags must be properly nested
+ Attribute values require quotes
+ Root Element Required
+
+Use Attributes to serve metadata
+
+
+ Special Symbols
+  < &lt;
+  > &gt;
+  " &quot;
+  ' &apos;
+  & &amp;
+
+
+What is a Schema?
+
+Schema defines the structure of the document.
+
+DTD or XSD? - provides an ability to validate the document
+  Document Type Definition
+  XSD XML Schema
+  RELAX NG
+  W3C XML Schema Language
+
+
+DTD
+ Contains elements declarations
+ Attribute Declarations
+ Entity References Declarations
+
+Element Declarations
+Declaration syntax <!> 
+
+Element syntax
+<!Element element-name (content-model)>
+
+Note: content-model defines whether element contains 
+child only element 
+text only element -> #PCDATA
+Any element
+empty element
+mixed element
+        	
+
+
+text content -> PCDATA (parsable character)
+
+eg:
+<!ELEMENT employee (empno, name, salary)>
+<!ELEMENT empno (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT salary (#PCDATA)>
+
+
+<employee>
+  <empno>1111</empno>
+  <name>Nitesh</name>
+  <salary>34000</salary>	
+</employee>
+
+In Order to map DTD in XMl use <!DOCTYPE>
+
+Types of DTD's
+ internal (within the xml)
+ external (external file)
+
+> Internal
+<!DOCTYPE rootElement [DTD rules]>
+
+eg:
+<!DOCTYPE employee [
+ <!ELEMENT employee (empno, name, salary)>
+ <!ELEMENT empno (#PCDATA)>
+ <!ELEMENT name (#PCDATA)>
+ <!ELEMENT salary (#PCDATA)>
+]
+
+external
+ private - This are specific to the project
+ Syntax:	
+  <!DOCTYPE rootElement SYSTEM "filename">
+
+ public  - Spring, Hibernate is example of public DTD
+ Syntax:
+  <!DOCTYPE rootElement PUBLIC	"-//vendorname//version//EN" "dtd filename">
+"-//vendorname//version//EN" -> Not mandatory
++ Registered with ISO
+- Not Registered with ISO
+
+
+AND (empno, salary)
+OR (empno | salary)
+
+Cardinality operators:
+ 3 cardinallity operators are avaliable
+ * (0 to n)
+ + (1 to n)
+ ? (0 or 1)
+
+
+<!ELEMENT books (book*)>
+<!ELEMENT book ((book-name|title), price, author+, publication?)>
+<!ELEMENT book-name (#PCDATA)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT price (#PCDATA)>
+<!ELEMENT author (#PCDATA)>
+<!ELEMENT publication (#PCDATA)>
+
+
+
+Mixed Element
+Note:- 
+Must declare #PCDATA
+cardinality is required *
+<!ELEMENT employees (#PCDATA|emp)*>
+
+
+EMPTY Elements
+------------------
+Note:-
+no child element or text data
+<!ELEMENT br EMPTY>
+
+
+ANY ELements
+------------------
+Are those one which allows Empty, Mixed and child elements[defined elements only]
+<!ELEMENT employees (employee+)
+<!ELEMENT employee ANY>
+<!ELEMENT empName (#PCDATA)>
+<!ELEMENT salary (#PCDATA)>
+
+<employees>
+ <employee></employee>
+ <employee>
+   Pratian
+ <empName>Nitesh</empName>
+ </employee> 	
+ <employee>
+   Employee info  
+ </employee>
+</employees>
+
+
+Attributes
+-------------
+Attributes are used to provide an extra information about the element.
+
+CDATA is used in attributes where as PCDATA is used in elements
+
+syntax:-
+<!ATTLIST element attributename attributedatatype attributespecifier other-information>
+eg:-
+<!ATTLIST employee empid CDATA #REQUIRED>
+<!ATTLIST employee empname CDATA #REQUIRED>
+<!ATTLIST employee salary CDATA #REQUIRED>
+
+
+4 attributesspecifiers
+-------------------------
+mandatory - #REQUIRED
+optional - #IMPLIED
+fixed - #FIXED
+default - if no specifier is used then its default attribute but default value need to specified
+
+
+<!ATTLIST student empID CDATA #REQUIRED>
+<!ATTLIST student  empName CDATA #IMPLIED>
+<!ATTLIST student studentcourse CDATA "Java"> <!-- This is default value, which is other information -->
+<!ATTLIST student studentFee CDATA #FIXED "1000">
+
+
+
+attributes datatypes
+--------------------
+CDATA - Character Data
+ID - If this attribute is used, then value used in should be unique in xml. The value can only with _ or alphabets
+IDREF - Refering and element by ID. Mostly used for reuse
+IDREFS - Refering list of elements by IDs separated by space as value
+ENTITY
+ENTITIES
+NMTOKEN - must be a valid xml[A-Z a-z 0-9 - _ .] are the only values are allowed 
+NMTOKENS
+ENUMERATED - List of Values. The attribute allows any one of the value from the list.
+NOTATION
+
+eg:-
+ENUMERATED
+<!ATTLIST employee payment-type (DD|CHECK|CASH) #REQUIRED>
+ID
+<!ATTLIST employee empid ID #REQUIRED>
+
+
+
+eg:-
+<!ELEMENT students (course*, student*)>
+<!ELEMENT course EMPTY>
+<!ATTLIST course courseId ID #REQUIRED>
+<!ATTLIST course courseName CDATA #REQUIRED>
+<!ELEMENT student EMPTY>
+<!ATTLIST student studentId ID #REQUIRED>
+<!ATTLIST student studentName CDATA #REQUIRED>
+<!ATTLIST student scourseId IDREF #REQUIRED>
+
+
+
+
+<!ELEMENT students (course*, student*)>
+<!ELEMENT course EMPTY>
+<!ATTLIST course courseId ID #REQUIRED>
+<!ATTLIST course courseName CDATA #REQUIRED>
+<!ELEMENT student EMPTY>
+<!ATTLIST student studentId ID #REQUIRED>
+<!ATTLIST student studentName CDATA #IMPLIED>
+<!ATTLIST student scoursesId IDREFS #IMPLIED>
+
+
+
+<!ELEMENT students (course*, student*)>
+<!ELEMENT course EMPTY>
+<!ATTLIST course courseId ID #REQUIRED>
+<!ATTLIST course courseName CDATA #REQUIRED>
+<!ELEMENT student EMPTY>
+<!ATTLIST student studentId ID #REQUIRED>
+<!ATTLIST student studentName CDATA #IMPLIED>
+<!ATTLIST student scoursesId IDREFS #IMPLIED>
+<!ATTLIST student departname NMTOKEN #IMPLIED>
+
+<course scourseId="CR11"></course>
+<course scourseId="CR12"></course>
+<course scourseId="CR22"></course>
+<student scourses="CR11 CR12 CR22" departname="_ABCD"></student> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+ 		
+	
